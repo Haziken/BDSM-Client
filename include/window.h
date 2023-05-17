@@ -1,11 +1,10 @@
 #pragma once
 
 #include <SDL.h>
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_sdlrenderer.h"
-#include <imgui.h>
-
 #include <string_view>
+#include <iostream>
+
+#include <imgui.h>
 
 namespace BDSM
 {
@@ -14,19 +13,13 @@ namespace BDSM
 	public:
 		Window(std::string_view title, ImVec2 windowSize);
 
-		SDL_Window* GetWindow();
-		SDL_Renderer* GetRenderer();
+		SDL_Window* window = nullptr;
+		SDL_Renderer* renderer = nullptr;
 
-		const ImVec4& GetClearColor();
-		void SetClearColor(ImVec4 clearColor);
+		SDL_Color backgroundColor = { 60,60,60,255 };
 
 		void Draw();
 
 		~Window();
-	private:
-
-		ImVec4 m_clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-		SDL_Window* m_window = nullptr;
-		SDL_Renderer* m_renderer = nullptr;
 	};
 }

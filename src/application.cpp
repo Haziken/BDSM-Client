@@ -1,38 +1,32 @@
 #include "../include/application.h"
 
-BDSM::Application::Application(std::string_view title, ImVec2 windowSize) : m_window(new Window(title, windowSize))
+BDSM::Application::Application(std::string_view title, ImVec2 windowSize) : m_window(std::make_shared<Window>(title, windowSize)), m_ui(std::make_shared<UI>(m_window.get()->window, m_window.get()->renderer))
 {}
-
-BDSM::Window* BDSM::Application::GetWindow()
-{
-	return m_window;
-}
 
 void BDSM::Application::Run()
 {
-	Setup();
 	bool done = false;
+	SDL_Event e;
 	while (!done)
 	{
-		SDL_Event e;
 		while (SDL_PollEvent(&e))
 		{
 			ImGui_ImplSDL2_ProcessEvent(&e);
 			if (e.type == SDL_QUIT)
 				done = true;
-			if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE && e.window.windowID == SDL_GetWindowID(m_window->GetWindow()))
+			if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE && e.window.windowID == SDL_GetWindowID(m_window.get()->window))
 				done = true;
 		}
 
-		Update();
 		Draw();
-
-		m_window->Draw();
-
+		m_ui.get()->Draw();
+		m_ui.get()->DrawSDL();
+		m_window.get()->Draw();
 	}
+
 }
 
-BDSM::Application::~Application()
+void BDSM::Application::Draw()
 {
-	delete m_window;
+
 }
