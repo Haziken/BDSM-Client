@@ -15,6 +15,7 @@ namespace BDSM
 
 		struct IO
 		{
+			int menuSelect = 0;
 			std::function<void(std::string_view)> contextSelect;
 		};
 
